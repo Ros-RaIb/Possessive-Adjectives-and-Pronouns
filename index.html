@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Pronouns Lab · Personal · Possessive Adjectives · Possessive Pronouns</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F4F3EF;
+    --paper-2:#EEEBE4;
+    --surface:#FBFAF7;
+    --ink:#26241F;
+    --ink-soft:#615C53;
+    --ink-faint:#938D82;
+    --line:#E2DDD3;
+    --line-2:#D6D0C4;
+    --accent:#5C7064;       /* muted sage – the single accent */
+    --accent-deep:#445249;
+    /* family tints (low chroma, stay neutral) */
+    --f1-bg:#EBE5DA;  --f1-ink:#6E6353;   /* personal / subject */
+    --f2-bg:#E3E7EB;  --f2-ink:#4F5A65;   /* possessive adjective */
+    --f3-bg:#E4EAE3;  --f3-ink:#4F5F4E;   /* possessive pronoun */
+    --ok:#4F6B53; --ok-bg:#E6EDE5;
+    --no:#9A5A4A; --no-bg:#F1E4DF;
+    --radius:16px;
+    --shadow:0 1px 2px rgba(38,36,31,.05), 0 8px 24px rgba(38,36,31,.06);
+    --maxw:1080px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0; background:var(--paper); color:var(--ink);
+    font-family:"Inter",system-ui,sans-serif; font-size:17px; line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3{font-family:"Bricolage Grotesque","Inter",sans-serif; line-height:1.05; letter-spacing:-.01em; margin:0;}
+  .mono{font-family:"JetBrains Mono",monospace;}
+  a{color:inherit;}
+  .wrap{max-width:var(--maxw); margin:0 auto; padding:0 24px;}
+  .eyebrow{font-family:"JetBrains Mono",monospace; font-size:12.5px; letter-spacing:.18em; text-transform:uppercase; color:var(--accent-deep);}
+
+  /* ---------- NAV ---------- */
+  nav{position:sticky; top:0; z-index:50; background:rgba(244,243,239,.82); backdrop-filter:blur(10px); border-bottom:1px solid var(--line);}
+  nav .wrap{display:flex; align-items:center; justify-content:space-between; height:60px;}
+  .brand{font-family:"Bricolage Grotesque"; font-weight:800; font-size:18px; letter-spacing:-.02em; display:flex; align-items:center; gap:9px;}
+  .brand .dot{width:11px;height:11px;border-radius:50%;background:var(--accent);}
+  .navlinks{display:flex; gap:6px;}
+  .navlinks a{font-size:14px; color:var(--ink-soft); text-decoration:none; padding:7px 12px; border-radius:9px; font-weight:500; transition:background .18s,color .18s;}
+  .navlinks a:hover{background:var(--paper-2); color:var(--ink);}
+  .menu-btn{display:none;}
+
+  /* ---------- HERO ---------- */
+  header.hero{padding:74px 0 36px;}
+  .hero h1{font-size:clamp(40px,7vw,76px); font-weight:800; max-width:14ch;}
+  .hero h1 em{font-style:normal; color:var(--accent);}
+  .lede{font-size:clamp(17px,2.2vw,20px); color:var(--ink-soft); max-width:54ch; margin-top:20px;}
+  .lede b{color:var(--ink); font-weight:600;}
+
+  /* ---------- SWITCHER (signature) ---------- */
+  .lab{margin-top:40px; background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); overflow:hidden;}
+  .lab-top{display:flex; align-items:center; justify-content:space-between; gap:16px; padding:16px 22px; border-bottom:1px solid var(--line); flex-wrap:wrap;}
+  .lab-top .label{font-family:"JetBrains Mono"; font-size:12px; letter-spacing:.14em; text-transform:uppercase; color:var(--ink-faint);}
+  .chips{display:flex; gap:8px; flex-wrap:wrap;}
+  .chip{font-family:"JetBrains Mono"; font-weight:500; font-size:15px; padding:8px 15px; border-radius:999px; border:1px solid var(--line-2); background:var(--paper); color:var(--ink-soft); cursor:pointer; transition:all .16s;}
+  .chip:hover{border-color:var(--accent); color:var(--ink);}
+  .chip[aria-pressed="true"]{background:var(--ink); color:var(--paper); border-color:var(--ink);}
+  .lab-body{display:grid; grid-template-columns:1fr 1fr 1fr; gap:0;}
+  .form-cell{padding:26px 22px; border-right:1px solid var(--line);}
+  .form-cell:last-child{border-right:none;}
+  .form-cell .ftag{display:inline-block; font-family:"JetBrains Mono"; font-size:11px; letter-spacing:.1em; text-transform:uppercase; padding:4px 9px; border-radius:7px; margin-bottom:14px;}
+  .form-cell.f1 .ftag{background:var(--f1-bg); color:var(--f1-ink);}
+  .form-cell.f2 .ftag{background:var(--f2-bg); color:var(--f2-ink);}
+  .form-cell.f3 .ftag{background:var(--f3-bg); color:var(--f3-ink);}
+  .word{font-family:"Bricolage Grotesque"; font-weight:800; font-size:clamp(30px,4.4vw,46px); letter-spacing:-.02em;}
+  .sent{margin-top:14px; font-family:"JetBrains Mono"; font-size:15px; color:var(--ink-soft); line-height:1.7;}
+  .sent .hl{color:var(--ink); background:var(--paper-2); padding:1px 6px; border-radius:6px; font-weight:700; transition:background .2s;}
+  .pulse .hl{animation:pulse .5s ease;}
+  @keyframes pulse{0%{background:#dfe6dd;}100%{background:var(--paper-2);}}
+  .rare-note{margin-top:14px; font-size:13.5px; color:var(--ink-faint); font-style:italic;}
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:64px 0; border-top:1px solid var(--line);}
+  .sec-head{max-width:62ch; margin-bottom:34px;}
+  .sec-head h2{font-size:clamp(26px,4vw,40px); font-weight:700; margin-top:10px;}
+  .sec-head p{color:var(--ink-soft); margin-top:14px;}
+
+  /* family cards */
+  .fcards{display:grid; grid-template-columns:repeat(3,1fr); gap:18px;}
+  .fcard{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:24px; box-shadow:var(--shadow); display:flex; flex-direction:column;}
+  .fcard .swatch{width:34px;height:34px;border-radius:9px; margin-bottom:16px;}
+  .fcard.f1 .swatch{background:var(--f1-bg);} .fcard.f1 h3{color:var(--f1-ink);}
+  .fcard.f2 .swatch{background:var(--f2-bg);} .fcard.f2 h3{color:var(--f2-ink);}
+  .fcard.f3 .swatch{background:var(--f3-bg);} .fcard.f3 h3{color:var(--f3-ink);}
+  .fcard h3{font-size:21px; font-weight:700;}
+  .fcard .es{font-size:13.5px; color:var(--ink-faint); margin-top:3px; font-style:italic;}
+  .fcard p{font-size:15px; color:var(--ink-soft); margin:14px 0 16px;}
+  .fcard .words{font-family:"JetBrains Mono"; font-size:14px; color:var(--ink); background:var(--paper); border:1px solid var(--line); border-radius:10px; padding:11px 13px; margin-top:auto;}
+  .fcard .job{font-family:"JetBrains Mono"; font-size:12px; letter-spacing:.04em; color:var(--ink-faint); margin-top:12px;}
+
+  /* difference */
+  .diff{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  .dbox{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:26px; box-shadow:var(--shadow);}
+  .dbox h3{font-size:19px; font-weight:700; display:flex; align-items:center; gap:10px;}
+  .pill{font-family:"JetBrains Mono"; font-size:11px; letter-spacing:.08em; text-transform:uppercase; padding:4px 9px; border-radius:7px;}
+  .dbox.f2 .pill{background:var(--f2-bg); color:var(--f2-ink);}
+  .dbox.f3 .pill{background:var(--f3-bg); color:var(--f3-ink);}
+  .dbox .rule{font-size:15px; color:var(--ink-soft); margin:14px 0 16px;}
+  .ex{font-family:"JetBrains Mono"; font-size:15.5px; line-height:1.9;}
+  .ex .u{ text-decoration:underline; text-decoration-color:var(--accent); text-underline-offset:3px; text-decoration-thickness:2px; font-weight:700; color:var(--ink);}
+  .ex .noun{color:var(--ink-faint);}
+  .watch{margin-top:18px; display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .warn{background:var(--paper-2); border:1px solid var(--line-2); border-radius:12px; padding:16px 18px;}
+  .warn h4{margin:0 0 6px; font-family:"Bricolage Grotesque"; font-size:15px;}
+  .warn p{margin:0; font-size:14px; color:var(--ink-soft);}
+  .warn .mono{color:var(--ink);}
+
+  /* table */
+  .tbl-tools{display:flex; justify-content:flex-end; margin-bottom:14px;}
+  .toggle{font-family:"Inter"; font-size:13.5px; font-weight:600; color:var(--ink-soft); background:var(--surface); border:1px solid var(--line-2); padding:8px 14px; border-radius:999px; cursor:pointer; transition:all .16s;}
+  .toggle:hover{border-color:var(--accent); color:var(--ink);}
+  .tablewrap{overflow-x:auto; border:1px solid var(--line); border-radius:var(--radius); box-shadow:var(--shadow); background:var(--surface);}
+  table{border-collapse:collapse; width:100%; min-width:620px;}
+  thead th{font-family:"Bricolage Grotesque"; font-weight:700; font-size:14px; text-align:left; padding:16px 18px; color:var(--ink); border-bottom:1px solid var(--line-2); position:sticky; top:0;}
+  thead th .sub{display:block; font-family:"Inter"; font-weight:500; font-size:11.5px; color:var(--ink-faint); letter-spacing:0; text-transform:none; margin-top:2px;}
+  th.f1{background:var(--f1-bg);} th.f2{background:var(--f2-bg);} th.f3{background:var(--f3-bg);}
+  tbody td{padding:13px 18px; border-bottom:1px solid var(--line); font-family:"JetBrains Mono"; font-size:15.5px;}
+  tbody tr:last-child td{border-bottom:none;}
+  tbody tr{transition:background .15s;}
+  tbody tr:hover{background:var(--paper);}
+  td.es{font-family:"Inter"; font-style:italic; font-size:13.5px; color:var(--ink-faint);}
+  .hide-es td.es, .hide-es th.es{display:none;}
+  .star{color:var(--accent-deep); cursor:help; font-weight:700;}
+  .tnote{font-size:13px; color:var(--ink-faint); margin-top:12px; font-style:italic;}
+
+  /* examples */
+  .examples{display:grid; grid-template-columns:1fr 1fr; gap:14px;}
+  .exline{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:16px 18px; font-family:"JetBrains Mono"; font-size:15.5px; box-shadow:var(--shadow);}
+  .exline .w{font-weight:700; padding:1px 6px; border-radius:6px;}
+  .exline .t1{background:var(--f1-bg); color:var(--f1-ink);}
+  .exline .t2{background:var(--f2-bg); color:var(--f2-ink);}
+  .exline .t3{background:var(--f3-bg); color:var(--f3-ink);}
+  .exline .es{display:block; font-family:"Inter"; font-style:italic; font-size:13px; color:var(--ink-faint); margin-top:7px;}
+
+  /* quiz */
+  .quiz-head{display:flex; align-items:flex-end; justify-content:space-between; gap:20px; flex-wrap:wrap; margin-bottom:8px;}
+  .scorebox{text-align:right; font-family:"JetBrains Mono";}
+  .scorebox .big{font-family:"Bricolage Grotesque"; font-weight:800; font-size:34px; color:var(--accent-deep); line-height:1;}
+  .scorebox .lbl{font-size:11.5px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint);}
+  .progress{height:8px; background:var(--paper-2); border-radius:999px; overflow:hidden; margin:18px 0 30px; border:1px solid var(--line);}
+  .progress span{display:block; height:100%; width:0; background:var(--accent); border-radius:999px; transition:width .4s ease;}
+  .qgroup-label{font-family:"JetBrains Mono"; font-size:12px; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-faint); margin:26px 0 14px;}
+  .q{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:22px 24px; box-shadow:var(--shadow); margin-bottom:16px;}
+  .q .qtext{font-size:18px; font-weight:600; margin-bottom:6px;}
+  .q .qtext .blank{color:var(--accent-deep); font-family:"JetBrains Mono"; font-weight:700;}
+  .q .qhint{font-size:13.5px; color:var(--ink-faint); margin-bottom:16px;}
+  .opts{display:flex; gap:10px; flex-wrap:wrap;}
+  .opt{font-family:"JetBrains Mono"; font-size:15.5px; font-weight:500; padding:11px 20px; border-radius:10px; border:1px solid var(--line-2); background:var(--paper); color:var(--ink); cursor:pointer; transition:all .14s;}
+  .opt:hover:not(:disabled){border-color:var(--accent); transform:translateY(-1px);}
+  .opt:disabled{cursor:default;}
+  .opt.correct{background:var(--ok-bg); border-color:var(--ok); color:var(--ok);}
+  .opt.wrong{background:var(--no-bg); border-color:var(--no); color:var(--no);}
+  .feedback{margin-top:14px; font-size:14.5px; padding:11px 14px; border-radius:10px; display:none;}
+  .feedback.show{display:block;}
+  .feedback.good{background:var(--ok-bg); color:var(--ok);}
+  .feedback.bad{background:var(--no-bg); color:var(--no);}
+  .feedback b{font-weight:700;}
+
+  .result{margin-top:26px; background:var(--ink); color:var(--paper); border-radius:var(--radius); padding:34px 30px; text-align:center; display:none;}
+  .result.show{display:block; animation:rise .5s ease;}
+  @keyframes rise{from{opacity:0; transform:translateY(12px);}to{opacity:1; transform:none;}}
+  .result h3{font-size:30px; font-weight:800; color:var(--paper);}
+  .result .rscore{font-family:"JetBrains Mono"; font-size:17px; color:#cfd6cc; margin:10px 0 4px;}
+  .result p{color:#cfcabf; margin:6px 0 22px; font-size:15.5px;}
+  .restart{font-family:"Inter"; font-weight:600; font-size:15px; padding:12px 26px; border-radius:999px; border:none; background:var(--accent); color:#fff; cursor:pointer; transition:background .16s;}
+  .restart:hover{background:var(--accent-deep);}
+  .celebrate{font-size:30px; letter-spacing:6px; margin-bottom:6px;}
+
+  footer{padding:50px 0 64px; border-top:1px solid var(--line); text-align:center; color:var(--ink-faint); font-size:14px;}
+  footer .big{font-family:"Bricolage Grotesque"; font-weight:700; font-size:22px; color:var(--ink); margin-bottom:8px;}
+
+  /* reveal */
+  .js .reveal{opacity:0; transform:translateY(16px); transition:opacity .6s ease, transform .6s ease;}
+  .js .reveal.in{opacity:1; transform:none;}
+
+  /* responsive */
+  @media(max-width:820px){
+    .lab-body,.fcards,.diff,.examples{grid-template-columns:1fr;}
+    .form-cell{border-right:none; border-bottom:1px solid var(--line);}
+    .form-cell:last-child{border-bottom:none;}
+    .watch{grid-template-columns:1fr;}
+    .navlinks{display:none;}
+  }
+  @media(prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto;}
+    .js .reveal{opacity:1; transform:none; transition:none;}
+    *{animation:none!important;}
+  }
+</style>
+</head>
+<body>
+<script>document.documentElement.classList.add('js');</script>
+
+<nav>
+  <div class="wrap">
+    <div class="brand"><span class="dot"></span>Pronouns Lab</div>
+    <div class="navlinks">
+      <a href="#families">Three families</a>
+      <a href="#difference">The difference</a>
+      <a href="#table">Reference</a>
+      <a href="#examples">Examples</a>
+      <a href="#practice">Practice</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">English grammar · Level A1–A2</div>
+    <h1>Same person, <em>three</em> little words.</h1>
+    <p class="lede">Every person in English carries three forms: a <b>personal pronoun</b> to do the action, a <b>possessive adjective</b> to sit before a noun, and a <b>possessive pronoun</b> to stand on its own. Pick a person below and watch all three change.</p>
+
+    <!-- SIGNATURE: live person switcher -->
+    <div class="lab" id="lab">
+      <div class="lab-top">
+        <span class="label">Choose a person</span>
+        <div class="chips" id="chips" role="group" aria-label="Choose a person"></div>
+      </div>
+      <div class="lab-body">
+        <div class="form-cell f1">
+          <span class="ftag">Personal pronoun</span>
+          <div class="word" id="w1">I</div>
+          <div class="sent" id="s1"><span class="hl">I</span> have a name.</div>
+        </div>
+        <div class="form-cell f2">
+          <span class="ftag">Possessive adjective</span>
+          <div class="word" id="w2">my</div>
+          <div class="sent" id="s2">That is <span class="hl">my</span> name.</div>
+        </div>
+        <div class="form-cell f3">
+          <span class="ftag">Possessive pronoun</span>
+          <div class="word" id="w3">mine</div>
+          <div class="sent" id="s3">The name is <span class="hl">mine</span>.</div>
+          <div class="rare-note" id="rare3" style="display:none;">For <span class="mono">it</span> we almost never use a possessive pronoun here.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- THREE FAMILIES -->
+<section id="families">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">01 · What they are</div>
+      <h2>The three families of words</h2>
+      <p>Each family has one job. Learn the job and you will always know which word to use.</p>
+    </div>
+    <div class="fcards">
+      <div class="fcard f1 reveal">
+        <div class="swatch"></div>
+        <h3>Personal pronouns</h3>
+        <span class="es">pronombres personales (sujeto)</span>
+        <p>They replace the name of the person or thing that <b>does the action</b>. They go before the verb.</p>
+        <div class="words">I · you · he · she · it · we · they</div>
+        <div class="job">JOB → be the subject of the sentence</div>
+      </div>
+      <div class="fcard f2 reveal">
+        <div class="swatch"></div>
+        <h3>Possessive adjectives</h3>
+        <span class="es">adjetivos posesivos</span>
+        <p>They show <b>who owns something</b> and always sit <b>before a noun</b> (my book, your phone).</p>
+        <div class="words">my · your · his · her · its · our · their</div>
+        <div class="job">JOB → describe a noun (always + noun)</div>
+      </div>
+      <div class="fcard f3 reveal">
+        <div class="swatch"></div>
+        <h3>Possessive pronouns</h3>
+        <span class="es">pronombres posesivos</span>
+        <p>They also show ownership, but they <b>stand alone</b> and replace the noun (It's mine).</p>
+        <div class="words">mine · yours · his · hers · ours · theirs</div>
+        <div class="job">JOB → replace the noun (no noun after)</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIFFERENCE -->
+<section id="difference">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">02 · The confusing part</div>
+      <h2>Adjective or pronoun?</h2>
+      <p>This is where most people slip. The trick is simple: look at what comes <b>after</b> the word.</p>
+    </div>
+    <div class="diff">
+      <div class="dbox f2 reveal">
+        <h3><span class="pill">Adjective</span> needs a noun</h3>
+        <p class="rule">A possessive <b>adjective</b> is never alone — a noun follows it.</p>
+        <div class="ex">
+          This is <span class="u">my</span> <span class="noun">phone</span>.<br>
+          I like <span class="u">her</span> <span class="noun">idea</span>.<br>
+          <span class="u">Their</span> <span class="noun">house</span> is big.
+        </div>
+      </div>
+      <div class="dbox f3 reveal">
+        <h3><span class="pill">Pronoun</span> stands alone</h3>
+        <p class="rule">A possessive <b>pronoun</b> replaces the noun — nothing follows it.</p>
+        <div class="ex">
+          This phone is <span class="u">mine</span>.<br>
+          The idea was <span class="u">hers</span>.<br>
+          That big house is <span class="u">theirs</span>.
+        </div>
+      </div>
+    </div>
+    <div class="watch">
+      <div class="warn reveal">
+        <h4>Watch out: <span class="mono">its</span> vs <span class="mono">it's</span></h4>
+        <p><span class="mono">its</span> = possessive (the dog and <span class="mono">its</span> bone). <span class="mono">it's</span> = "it is". They sound the same but mean different things.</p>
+      </div>
+      <div class="warn reveal">
+        <h4>Good news: <span class="mono">his</span> never changes</h4>
+        <p>For "he", the adjective and the pronoun are the same word: <span class="mono">his</span> car · the car is <span class="mono">his</span>. One word, two jobs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TABLE -->
+<section id="table">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">03 · All of it on one page</div>
+      <h2>The complete reference</h2>
+      <p>Seven persons, three forms each. Hide the Spanish column and test yourself.</p>
+    </div>
+    <div class="tbl-tools reveal"><button class="toggle" id="esToggle" aria-pressed="false">Hide Spanish</button></div>
+    <div class="tablewrap reveal">
+      <table id="reftable">
+        <thead>
+          <tr>
+            <th class="f1">Personal<span class="sub">subject · does the action</span></th>
+            <th class="f2">Possessive adjective<span class="sub">+ noun</span></th>
+            <th class="f3">Possessive pronoun<span class="sub">stands alone</span></th>
+            <th class="es">Español</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>I</td><td>my</td><td>mine</td><td class="es">yo / mi / mío</td></tr>
+          <tr><td>you</td><td>your</td><td>yours</td><td class="es">tú / tu / tuyo</td></tr>
+          <tr><td>he</td><td>his</td><td>his</td><td class="es">él / su / suyo</td></tr>
+          <tr><td>she</td><td>her</td><td>hers</td><td class="es">ella / su / suyo</td></tr>
+          <tr><td>it</td><td>its</td><td>its <span class="star" title="Almost never used alone. We usually rephrase the sentence.">*</span></td><td class="es">eso / su / suyo</td></tr>
+          <tr><td>we</td><td>our</td><td>ours</td><td class="es">nosotros / nuestro / nuestro</td></tr>
+          <tr><td>they</td><td>their</td><td>theirs</td><td class="es">ellos·ellas / su / suyo</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="tnote">* The possessive pronoun for <span class="mono">it</span> is almost never used on its own — native speakers rephrase the sentence instead.</p>
+  </div>
+</section>
+
+<!-- EXAMPLES -->
+<section id="examples">
+  <div class="wrap">
+    <div class="sec-head reveal">
+      <div class="eyebrow">04 · See it in real talk</div>
+      <h2>Examples you'd actually say</h2>
+      <p>The same colours from the families help you spot which word is doing the job.</p>
+    </div>
+    <div class="examples">
+      <div class="exline reveal"><span class="w t1">We</span> are studying for the test.<span class="es">Nosotros estamos estudiando para el examen.</span></div>
+      <div class="exline reveal">Is this <span class="w t2">your</span> charger?<span class="es">¿Es este tu cargador?</span></div>
+      <div class="exline reveal">Don't touch that — it's <span class="w t3">mine</span>!<span class="es">No toques eso, ¡es mío!</span></div>
+      <div class="exline reveal"><span class="w t1">They</span> play in a band on weekends.<span class="es">Ellos tocan en una banda los fines de semana.</span></div>
+      <div class="exline reveal">I really like <span class="w t2">her</span> playlist.<span class="es">Me gusta mucho su lista de reproducción.</span></div>
+      <div class="exline reveal">The best score was <span class="w t3">hers</span>.<span class="es">El mejor puntaje fue el de ella.</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- PRACTICE -->
+<section id="practice">
+  <div class="wrap">
+    <div class="sec-head reveal" style="margin-bottom:18px;">
+      <div class="eyebrow">05 · Your turn</div>
+      <div class="quiz-head">
+        <h2>Practice &amp; level up</h2>
+        <div class="scorebox"><div class="big"><span id="score">0</span>/<span id="total">12</span></div><div class="lbl">Correct</div></div>
+      </div>
+      <p>Tap an answer to check it instantly. Aim for a clean run!</p>
+    </div>
+    <div class="progress reveal"><span id="bar"></span></div>
+    <div id="quiz"></div>
+
+    <div class="result" id="result">
+      <div class="celebrate" id="celebrate">★ ★ ★</div>
+      <h3 id="rtitle">Nice work!</h3>
+      <div class="rscore" id="rscore">You got 0 / 12</div>
+      <p id="rmsg"></p>
+      <button class="restart" id="restart">Try again</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="big">Three words. One person. You've got this.</div>
+    <div>Pronouns Lab · Personal pronouns, possessive adjectives &amp; possessive pronouns · English A1–A2</div>
+  </div>
+</footer>
+
+<script>
+/* ---------- DATA ---------- */
+var PEOPLE = [
+  {key:"I",    subj:"I",    verb:"have", adj:"my",    pron:"mine",  rare:false},
+  {key:"you",  subj:"You",  verb:"have", adj:"your",  pron:"yours", rare:false},
+  {key:"he",   subj:"He",   verb:"has",  adj:"his",   pron:"his",   rare:false},
+  {key:"she",  subj:"She",  verb:"has",  adj:"her",   pron:"hers",  rare:false},
+  {key:"it",   subj:"It",   verb:"has",  adj:"its",   pron:"its",   rare:true},
+  {key:"we",   subj:"We",   verb:"have", adj:"our",   pron:"ours",  rare:false},
+  {key:"they", subj:"They", verb:"have", adj:"their", pron:"theirs",rare:false}
+];
+
+/* ---------- SWITCHER ---------- */
+(function(){
+  var chips = document.getElementById("chips");
+  var w1=document.getElementById("w1"), w2=document.getElementById("w2"), w3=document.getElementById("w3");
+  var s1=document.getElementById("s1"), s2=document.getElementById("s2"), s3=document.getElementById("s3");
+  var rare3=document.getElementById("rare3");
+  var body=document.querySelector(".lab-body");
+
+  PEOPLE.forEach(function(p,i){
+    var b=document.createElement("button");
+    b.className="chip"; b.textContent=p.key; b.setAttribute("aria-pressed", i===0?"true":"false");
+    b.addEventListener("click", function(){ select(i); });
+    chips.appendChild(b);
+  });
+
+  function select(i){
+    var p=PEOPLE[i];
+    Array.prototype.forEach.call(chips.children, function(c,idx){ c.setAttribute("aria-pressed", idx===i?"true":"false"); });
+    w1.textContent=p.subj; w2.textContent=p.adj; w3.textContent=p.pron;
+    s1.innerHTML='<span class="hl">'+p.subj+'</span> '+p.verb+' a name.';
+    s2.innerHTML='That is <span class="hl">'+p.adj+'</span> name.';
+    if(p.rare){
+      s3.innerHTML='The name is <span class="hl">'+p.pron+'</span>.';
+      rare3.style.display="block";
+    } else {
+      s3.innerHTML='The name is <span class="hl">'+p.pron+'</span>.';
+      rare3.style.display="none";
+    }
+    body.classList.remove("pulse"); void body.offsetWidth; body.classList.add("pulse");
+  }
+  select(0);
+})();
+
+/* ---------- SPANISH TOGGLE ---------- */
+(function(){
+  var btn=document.getElementById("esToggle");
+  var tbl=document.getElementById("reftable");
+  btn.addEventListener("click", function(){
+    var hidden=tbl.classList.toggle("hide-es");
+    btn.setAttribute("aria-pressed", hidden?"true":"false");
+    btn.textContent=hidden?"Show Spanish":"Hide Spanish";
+  });
+})();
+
+/* ---------- QUIZ ---------- */
+var QUESTIONS = [
+  {g:"Set A · Pick the right word",
+   text:'____ are my best friends.', hint:'Who does the action? (subject)',
+   opts:["They","Their","Theirs"], a:0,
+   ok:'"They" is the subject — it does the action.',
+   no:'We need the subject (the doer). "Their" and "theirs" show possession.'},
+  {g:"Set A · Pick the right word",
+   text:'This is ____ book.', hint:'A noun (book) comes right after.',
+   opts:["I","my","mine"], a:1,
+   ok:'"my" + noun (book). That\'s a possessive adjective.',
+   no:'A noun follows the blank, so use the adjective "my" (my book).'},
+  {g:"Set A · Pick the right word",
+   text:'The red phone is ____.', hint:'Nothing comes after the blank.',
+   opts:["her","hers","she"], a:1,
+   ok:'"hers" stands alone — a possessive pronoun.',
+   no:'Nothing follows the blank, so use the standalone form "hers".'},
+  {g:"Set A · Pick the right word",
+   text:"____ tail is short.  (the dog)", hint:'Possession, not "it is".',
+   opts:["It's","Its","It"], a:1,
+   ok:'"Its" = possession. ("It\'s" would mean "it is".)',
+   no:'Careful: "it\'s" means "it is". For possession use "its".'},
+
+  {g:"Set B · Adjective or pronoun?",
+   text:'That laptop is ____.', hint:'Stands alone → pronoun.',
+   opts:["your","yours"], a:1,
+   ok:'Correct — "yours" stands alone.',
+   no:'Nothing follows it, so use the pronoun "yours".'},
+  {g:"Set B · Adjective or pronoun?",
+   text:'____ laptop is new.', hint:'A noun (laptop) follows → adjective.',
+   opts:["your","yours"], a:0,
+   ok:'Correct — "your" + noun (laptop).',
+   no:'A noun follows, so use the adjective "your".'},
+  {g:"Set B · Adjective or pronoun?",
+   text:'We love ____ school.', hint:'A noun (school) follows.',
+   opts:["our","ours"], a:0,
+   ok:'"our" + noun (school). Adjective.',
+   no:'A noun follows, so use the adjective "our".'},
+  {g:"Set B · Adjective or pronoun?",
+   text:'The winning idea was ____.', hint:'Stands alone.',
+   opts:["their","theirs"], a:1,
+   ok:'"theirs" stands alone. Pronoun.',
+   no:'Nothing follows, so use the pronoun "theirs".'},
+
+  {g:"Set C · Complete the set",
+   text:'he  →  ____  (possessive pronoun)', hint:'"the bag is ___"',
+   opts:["him","his","her"], a:1,
+   ok:'For "he" the possessive pronoun is "his".',
+   no:'"him" is an object pronoun. The possessive pronoun is "his".'},
+  {g:"Set C · Complete the set",
+   text:'we  →  ____  (possessive pronoun)', hint:'"the seats are ___"',
+   opts:["our","ours","us"], a:1,
+   ok:'For "we" the possessive pronoun is "ours".',
+   no:'"our" needs a noun after it. Alone, use "ours".'},
+  {g:"Set C · Complete the set",
+   text:'she  →  ____  (possessive pronoun)', hint:'"the choice is ___"',
+   opts:["her","hers","she"], a:1,
+   ok:'For "she" the possessive pronoun is "hers".',
+   no:'"her" is the adjective (her choice). Alone, use "hers".'},
+  {g:"Set C · Complete the set",
+   text:'they  →  ____  (possessive pronoun)', hint:'"the tickets are ___"',
+   opts:["them","their","theirs"], a:2,
+   ok:'For "they" the possessive pronoun is "theirs".',
+   no:'"their" needs a noun. Alone, use "theirs".'}
+];
+
+(function(){
+  var quiz=document.getElementById("quiz");
+  var scoreEl=document.getElementById("score");
+  var totalEl=document.getElementById("total");
+  var bar=document.getElementById("bar");
+  var result=document.getElementById("result");
+  var rtitle=document.getElementById("rtitle");
+  var rscore=document.getElementById("rscore");
+  var rmsg=document.getElementById("rmsg");
+  var celebrate=document.getElementById("celebrate");
+  var restart=document.getElementById("restart");
+  var score=0, answered=0, total=QUESTIONS.length;
+  totalEl.textContent=total;
+
+  function build(){
+    quiz.innerHTML=""; score=0; answered=0;
+    scoreEl.textContent="0"; bar.style.width="0%";
+    result.classList.remove("show");
+    var lastG=null;
+    QUESTIONS.forEach(function(q,qi){
+      if(q.g!==lastG){
+        var lbl=document.createElement("div");
+        lbl.className="qgroup-label"; lbl.textContent=q.g; quiz.appendChild(lbl); lastG=q.g;
+      }
+      var card=document.createElement("div"); card.className="q";
+      var qt=q.text.replace("____",'<span class="blank">____</span>');
+      card.innerHTML='<div class="qtext">'+(qi+1)+'. '+qt+'</div><div class="qhint">'+q.hint+'</div>';
+      var opts=document.createElement("div"); opts.className="opts";
+      var fb=document.createElement("div"); fb.className="feedback";
+      q.opts.forEach(function(o,oi){
+        var b=document.createElement("button");
+        b.className="opt"; b.type="button"; b.textContent=o;
+        b.addEventListener("click", function(){ pick(b,opts,fb,q,oi); });
+        opts.appendChild(b);
+      });
+      card.appendChild(opts); card.appendChild(fb); quiz.appendChild(card);
+    });
+  }
+
+  function pick(btn,opts,fb,q,oi){
+    if(opts.dataset.done) return;
+    opts.dataset.done="1";
+    var correct = oi===q.a;
+    Array.prototype.forEach.call(opts.children, function(b,idx){
+      b.disabled=true;
+      if(idx===q.a) b.classList.add("correct");
+      if(idx===oi && !correct) b.classList.add("wrong");
+    });
+    fb.classList.add("show", correct?"good":"bad");
+    fb.innerHTML = (correct?"<b>Correct! </b>":"<b>Not quite. </b>") + (correct?q.ok:q.no);
+    if(correct){ score++; scoreEl.textContent=score; }
+    answered++;
+    bar.style.width=(answered/total*100)+"%";
+    if(answered===total) finish();
+  }
+
+  function finish(){
+    var pct=score/total;
+    var stars = pct===1?"★ ★ ★ ★ ★" : pct>=.75?"★ ★ ★ ★" : pct>=.5?"★ ★ ★" : "★ ★";
+    celebrate.textContent=stars;
+    rscore.textContent="You got "+score+" / "+total;
+    if(pct===1){ rtitle.textContent="Perfect run! 🏆"; rmsg.textContent="You nailed every one. You truly know the three families."; }
+    else if(pct>=.75){ rtitle.textContent="Great job!"; rmsg.textContent="You're almost there — review the ones you missed and try for a perfect run."; }
+    else if(pct>=.5){ rtitle.textContent="Good progress."; rmsg.textContent="Remember the trick: a noun after = adjective, alone = pronoun. Give it another go!"; }
+    else { rtitle.textContent="Keep going."; rmsg.textContent="Scroll up to the reference table, then try again. You'll get it!"; }
+    result.classList.add("show");
+    result.scrollIntoView({behavior:"smooth", block:"center"});
+  }
+
+  restart.addEventListener("click", function(){ build(); document.getElementById("practice").scrollIntoView({behavior:"smooth"}); });
+  build();
+})();
+
+/* ---------- SCROLL REVEAL ---------- */
+(function(){
+  var els=document.querySelectorAll(".reveal");
+  if(!("IntersectionObserver" in window)){ els.forEach(function(e){e.classList.add("in");}); return; }
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(en){ if(en.isIntersecting){ en.target.classList.add("in"); io.unobserve(en.target); } });
+  },{threshold:.12});
+  els.forEach(function(e){ io.observe(e); });
+})();
+</script>
+</body>
+</html>
